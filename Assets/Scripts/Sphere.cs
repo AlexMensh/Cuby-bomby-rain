@@ -33,14 +33,11 @@ public class Sphere : MonoBehaviour
     private IEnumerator Fade(float fadeDelay)
     {
         float timerValue = 0f;
+        Color newColor = _renderer.material.color;
 
         while (timerValue < fadeDelay)
         {
-            float interpolateValue = timerValue / fadeDelay;
-
-            Color newColor = _renderer.material.color;
-
-            newColor.a = Mathf.Lerp(visibleAlpha, invisibleAlpha, interpolateValue);
+            newColor.a = Mathf.Lerp(visibleAlpha, invisibleAlpha, timerValue / fadeDelay);
 
             _renderer.material.color = newColor;
 
@@ -55,7 +52,7 @@ public class Sphere : MonoBehaviour
         Collider[] detectedItems = Physics.OverlapSphere(transform.position, _explosionRadius);
         var detectedItemsRigidbodys = new List<Rigidbody>();
 
-        foreach (var item in detectedItems)
+        foreach (Collider item in detectedItems)
         {
             Rigidbody attachedRigidbody = item.attachedRigidbody;
             if (attachedRigidbody != null)

@@ -59,8 +59,21 @@ public class CubePooler : MonoBehaviour
         return _cubesToPoolAmount;
     }
 
+    public int GetActiveCubesCount()
+    {
+        int activeCount = 0;
+        foreach (var cube in _pool)
+        {
+            if (cube.gameObject.activeSelf)
+            {
+                activeCount++;
+            }
+        }
+        return activeCount;
+    }
+
     private Cube CreateObject()
-    {     
+    {
         Cube cube = Instantiate(_prefab, GetSpawnPosition(), Quaternion.identity);
 
         _pool.Add(cube);
@@ -79,7 +92,7 @@ public class CubePooler : MonoBehaviour
         }
     }
 
-    private Vector3 GetSpawnPosition() 
+    private Vector3 GetSpawnPosition()
     {
         Vector3 spawnPosition = _container.transform.position + Random.insideUnitSphere * _spawnRadius;
 

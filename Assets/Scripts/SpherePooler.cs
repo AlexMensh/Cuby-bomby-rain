@@ -50,10 +50,24 @@ public class SpherePooler : MonoBehaviour
         SphereSpawned?.Invoke();
     }
 
+    public int GetActiveSpheresCount()
+    {
+        int activeCount = 0;
+        foreach (var cube in _pool)
+        {
+            if (cube.gameObject.activeSelf)
+            {
+                activeCount++;
+            }
+        }
+        return activeCount;
+    }
+
     public void ReleaseObject(Sphere sphere)
     {
         sphere.gameObject.SetActive(false);
     }
+
     public int GetSpherePooledAmount()
     {
         return _pool.Count;

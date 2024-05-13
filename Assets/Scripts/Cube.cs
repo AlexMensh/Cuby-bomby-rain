@@ -1,6 +1,3 @@
 using UnityEngine;
 
-public class Cube : MonoBehaviour
-{
-
-}
+public class Cube : MonoBehaviour { }
