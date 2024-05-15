@@ -1,19 +1,36 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class CubeRemover : MonoBehaviour
 {
     [SerializeField] private CubePooler _pool;
+    [SerializeField] private float _cubeLifetimeMin;
+    [SerializeField] private float _cubeLifetimeMax;
 
     public event Action<Transform> CubeRemoved;
 
-    private void OnCollisionEnter(Collision collision)
+    public void ReleaseCube(Cube cube)
     {
-        if (collision.collider.TryGetComponent(out Cube cube))
+        if (cube.IsColorChanged() == false)
         {
-            _pool.ReleaseObject(cube);
+            cube.SetRandomColor();
+            cube.ChangeStatus();
 
-            CubeRemoved?.Invoke(cube.transform);
+            StartCoroutine(LifetimeCount(cube));
         }
+    }
+
+    private IEnumerator LifetimeCount(Cube cube)
+    {
+        WaitForSeconds destroyDelay = new WaitForSeconds(UnityEngine.Random.Range(_cubeLifetimeMin, _cubeLifetimeMax));
+        
+        yield return destroyDelay;
+
+        cube.ChangeStatus();
+        cube.SetDefaultColor();
+
+        _pool.ReleaseObject(cube);
+        CubeRemoved?.Invoke(cube.transform);
     }
 }

@@ -7,12 +7,9 @@ public class SphereRemover : MonoBehaviour
     [SerializeField] private int _minRemoveDelay;
     [SerializeField] private int _maxRemoveDelay;
 
-    private void OnCollisionEnter(Collision collision)
+    public void ReleaseSphere(Sphere sphere)
     {
-        if (collision.collider.TryGetComponent(out Sphere sphere))
-        {
-            StartCoroutine(ExploeDelay(sphere));
-        }
+        StartCoroutine(ExploeDelay(sphere));
     }
 
     private IEnumerator ExploeDelay(Sphere sphere)
