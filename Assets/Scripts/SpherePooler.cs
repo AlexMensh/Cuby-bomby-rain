@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class SpherePooler : MonoBehaviour
 {
+    [SerializeField] private Transform _container;
     [SerializeField] private Sphere _prefab;
     [SerializeField] private CubeRemover _cubeRemover;
 
-    private List<Sphere> _pool;
-
-    public event Action SphereSpawned;
+    private ObjectPooler<Sphere> _pool;
 
     private void Awake()
     {
-        _pool = new List<Sphere>();
+        _pool = new ObjectPooler<Sphere>(_prefab, _container);
     }
 
     private void OnEnable()
@@ -26,34 +25,29 @@ public class SpherePooler : MonoBehaviour
         _cubeRemover.CubeRemoved -= GetObject;
     }
 
-    public void GetObject(Transform transform)
+    public void GetObject(Vector3 position)
     {
-        Sphere sphere = null;
+        _pool.GetObject(position);
+    }
 
-        foreach (var item in _pool)
+    public void ReleaseObject(Sphere sphere)
+    {
+        _pool.PutObject(sphere);
+    }
+    public int GetPooledSphereAmount()
+    {
+        int pooledSpheres = 0;
+        foreach (var sphere in _pool.PooledObjects)
         {
-            if (item.isActiveAndEnabled == false)
-            {
-                sphere = item;
-                break;
-            }
+            pooledSpheres++;
         }
-
-        if (sphere == null)
-        {
-            sphere = CreateObject();
-        }
-
-        sphere.gameObject.transform.position = transform.position;
-        sphere.gameObject.SetActive(true);
-
-        SphereSpawned?.Invoke();
+        return pooledSpheres;
     }
 
     public int GetActiveSpheresCount()
     {
         int activeCount = 0;
-        foreach (var cube in _pool)
+        foreach (var cube in _pool.PooledObjects)
         {
             if (cube.gameObject.activeSelf)
             {
@@ -61,24 +55,5 @@ public class SpherePooler : MonoBehaviour
             }
         }
         return activeCount;
-    }
-
-    public void ReleaseObject(Sphere sphere)
-    {
-        sphere.gameObject.SetActive(false);
-    }
-
-    public int GetSpherePooledAmount()
-    {
-        return _pool.Count;
-    }
-
-    private Sphere CreateObject()
-    {
-        Sphere sphere = Instantiate(_prefab);
-
-        _pool.Add(sphere);
-
-        return sphere;
     }
 }

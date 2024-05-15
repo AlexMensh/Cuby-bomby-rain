@@ -3,76 +3,54 @@ using UnityEngine;
 
 public class ObjectPooler<T> where T : MonoBehaviour
 {
-    [SerializeField] private T _prefab;
-    [SerializeField] private bool _isAutoExpanded;
     [SerializeField] private Transform _container;
+    [SerializeField] private T _prefab;
 
-    private List<T> _pool;
+    private List<T> _pool = new List<T>();
 
-    public ObjectPooler(T prefab, int itemsAmount, bool isAutoExpanded, Transform container)
+    public IEnumerable<T> PooledObjects => _pool;
+
+    public ObjectPooler(T prefab, Transform container)
     {
         _prefab = prefab;
         _container = container;
-        _isAutoExpanded = isAutoExpanded;
-
-        CreatePool(itemsAmount);
     }
 
-    public void CreatePool(int itemsCount)
+    public void GetObject(Vector3 position)
     {
-        _pool = new List<T>();
+        T item = null;
 
-        for (int i = 0; i < itemsCount; i++)
-        {
-            CreateObject();
-        }
-    }
-
-    public T GetObject(Vector3 position)
-    {
-        if (isCanGetObject(out T item))
-        {
-            item.transform.position = position;
-            _pool.Remove(item);
-            return item;
-        }
-
-        if (_isAutoExpanded)
-        {
-            return CreateObject();
-        }
-
-        throw new System.Exception($"No items to pool {typeof(T)}. Turn ON AutoExpand.");
-    }
-
-    public void PutObject(T item)
-    {
-        _pool.Add(item);
-        item.gameObject.SetActive(false);
-    }
-
-    private bool isCanGetObject(out T item)
-    {
         foreach (var checkItem in _pool)
         {
             if (checkItem.isActiveAndEnabled == false)
             {
                 item = checkItem;
-                item.gameObject.SetActive(true);
-                return true;
+                break;
             }
         }
-        item = null;
-        return false;
+
+        if (item == null)
+        {
+            item = CreateObject();
+        }
+
+        //_pool.Remove(item);
+        item.gameObject.transform.position = position;
+        item.gameObject.SetActive(true);
     }
 
-    private T CreateObject(bool isActiveByDefault = false)
+    public void PutObject(T item)
     {
-        var item = Object.Instantiate(_prefab);
+        //_pool.Add(item);
+        item.gameObject.SetActive(false);
+    }
 
-        item.gameObject.SetActive(isActiveByDefault);
-        item.transform.parent = _container.transform;
+    private T CreateObject()
+    {
+        T item = Object.Instantiate(_prefab);
         _pool.Add(item);
+        item.gameObject.SetActive(false);
+        item.transform.parent = _container.transform;
 
         return item;
     }

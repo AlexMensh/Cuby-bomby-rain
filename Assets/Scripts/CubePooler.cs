@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CubePooler : MonoBehaviour
@@ -10,11 +9,11 @@ public class CubePooler : MonoBehaviour
     [SerializeField] private int _cubesToPoolAmount;
     [SerializeField] private float _spawnRadius;
 
-    private List<Cube> _pool;
+    private ObjectPooler<Cube> _pool;
 
     private void Awake()
     {
-        _pool = new List<Cube>();
+        _pool = new ObjectPooler<Cube>(_prefab, _container);
     }
 
     private void Start()
@@ -24,34 +23,12 @@ public class CubePooler : MonoBehaviour
 
     public void GetObject()
     {
-        Cube cube = null;
-
-        foreach (var item in _pool)
-        {
-            if (item.isActiveAndEnabled == false)
-            {
-                cube = item;
-                break;
-            }
-        }
-
-        if (cube == null)
-        {
-            cube = CreateObject();
-        }
-
-        cube.gameObject.transform.position = GetSpawnPosition();
-        cube.gameObject.SetActive(true);
+        _pool.GetObject(GetSpawnPosition());
     }
 
     public void ReleaseObject(Cube cube)
     {
-        cube.gameObject.SetActive(false);
-    }
-
-    public int GetCubesPooledAmount()
-    {
-        return _pool.Count;
+        _pool.PutObject(cube);
     }
 
     public int GetCubesToPool()
@@ -59,10 +36,20 @@ public class CubePooler : MonoBehaviour
         return _cubesToPoolAmount;
     }
 
+    public int GetPooledCubesAmount()
+    {
+        int pooledCubes = 0;
+        foreach (var cube in _pool.PooledObjects)
+        {
+            pooledCubes++;
+        }
+        return pooledCubes;
+    }
+
     public int GetActiveCubesCount()
     {
         int activeCount = 0;
-        foreach (var cube in _pool)
+        foreach (var cube in _pool.PooledObjects)
         {
             if (cube.gameObject.activeSelf)
             {
@@ -70,15 +57,6 @@ public class CubePooler : MonoBehaviour
             }
         }
         return activeCount;
-    }
-
-    private Cube CreateObject()
-    {
-        Cube cube = Instantiate(_prefab, GetSpawnPosition(), Quaternion.identity);
-
-        _pool.Add(cube);
-
-        return cube;
     }
 
     private IEnumerator SpawnObjects()

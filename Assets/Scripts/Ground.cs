@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Ground : MonoBehaviour 
+public class Ground : MonoBehaviour
 {
     [SerializeField] private CubeRemover _cubeRemover;
     [SerializeField] private SphereRemover _sphereRemover;

@@ -9,10 +9,10 @@ public class SphereRemover : MonoBehaviour
 
     public void ReleaseSphere(Sphere sphere)
     {
-        StartCoroutine(ExploeDelay(sphere));
+        StartCoroutine(ReleaseCount(sphere));
     }
 
-    private IEnumerator ExploeDelay(Sphere sphere)
+    private IEnumerator ReleaseCount(Sphere sphere)
     {
         float randomValue = Random.Range(_minRemoveDelay, _maxRemoveDelay);
         WaitForSeconds explodeDelay = new WaitForSeconds(randomValue);

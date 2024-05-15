@@ -21,7 +21,7 @@ public class UIText : MonoBehaviour
     private void Update()
     {
         _activeObjectsText.text = (_cubePooler.GetActiveCubesCount() + _spherePooler.GetActiveSpheresCount()).ToString();
-        _cubesText.text = _cubePooler.GetCubesPooledAmount().ToString();
-        _spheresText.text = _spherePooler.GetSpherePooledAmount().ToString();
+        _cubesText.text = _cubePooler.GetPooledCubesAmount().ToString();
+        _spheresText.text = _spherePooler.GetPooledSphereAmount().ToString();
     }
 }

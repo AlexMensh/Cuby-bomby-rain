@@ -55,6 +55,7 @@ public class Sphere : MonoBehaviour
         foreach (Collider item in detectedItems)
         {
             Rigidbody attachedRigidbody = item.attachedRigidbody;
+
             if (attachedRigidbody != null)
             {
                 detectedItemsRigidbodys.Add(attachedRigidbody);
