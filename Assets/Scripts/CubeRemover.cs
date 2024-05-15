@@ -5,8 +5,8 @@ using UnityEngine;
 public class CubeRemover : MonoBehaviour
 {
     [SerializeField] private CubePooler _pool;
-    [SerializeField] private float _cubeLifetimeMin;
-    [SerializeField] private float _cubeLifetimeMax;
+    [SerializeField] private int _cubeLifetimeMin;
+    [SerializeField] private int _cubeLifetimeMax;
 
     public event Action<Vector3> CubeRemoved;
 
@@ -23,14 +23,15 @@ public class CubeRemover : MonoBehaviour
 
     private IEnumerator ReleaseCount(Cube cube)
     {
-        WaitForSeconds destroyDelay = new WaitForSeconds(UnityEngine.Random.Range(_cubeLifetimeMin, _cubeLifetimeMax));
+        int randomValue = UnityEngine.Random.Range(_cubeLifetimeMin, _cubeLifetimeMax);
+        WaitForSeconds wait = new WaitForSeconds(randomValue);
 
-        yield return destroyDelay;
+        yield return wait;
 
         cube.ChangeStatus();
         cube.SetDefaultColor();
 
-        _pool.ReleaseObject(cube);
         CubeRemoved?.Invoke(cube.transform.position);
+        _pool.ReleaseObject(cube);
     }
 }

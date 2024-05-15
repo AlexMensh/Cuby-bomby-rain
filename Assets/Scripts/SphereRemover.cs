@@ -4,8 +4,8 @@ using UnityEngine;
 public class SphereRemover : MonoBehaviour
 {
     [SerializeField] private SpherePooler _pool;
-    [SerializeField] private int _minRemoveDelay;
-    [SerializeField] private int _maxRemoveDelay;
+    [SerializeField] private int _sphereLifetimeMin;
+    [SerializeField] private int _sphereLifetimeMax;
 
     public void ReleaseSphere(Sphere sphere)
     {
@@ -14,12 +14,12 @@ public class SphereRemover : MonoBehaviour
 
     private IEnumerator ReleaseCount(Sphere sphere)
     {
-        float randomValue = Random.Range(_minRemoveDelay, _maxRemoveDelay);
-        WaitForSeconds explodeDelay = new WaitForSeconds(randomValue);
+        int randomValue = Random.Range(_sphereLifetimeMin, _sphereLifetimeMax);
+        WaitForSeconds wait = new WaitForSeconds(randomValue);
 
         sphere.StartFade(randomValue);
 
-        yield return explodeDelay;
+        yield return wait;
 
         sphere.Explode();
         _pool.ReleaseObject(sphere);

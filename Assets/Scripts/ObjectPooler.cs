@@ -34,14 +34,12 @@ public class ObjectPooler<T> where T : MonoBehaviour
             item = CreateObject();
         }
 
-        //_pool.Remove(item);
         item.gameObject.transform.position = position;
         item.gameObject.SetActive(true);
     }
 
     public void PutObject(T item)
     {
-        //_pool.Add(item);
         item.gameObject.SetActive(false);
     }
 

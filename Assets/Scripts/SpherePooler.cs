@@ -47,9 +47,9 @@ public class SpherePooler : MonoBehaviour
     public int GetActiveSpheresCount()
     {
         int activeCount = 0;
-        foreach (var cube in _pool.PooledObjects)
+        foreach (var sphere in _pool.PooledObjects)
         {
-            if (cube.gameObject.activeSelf)
+            if (sphere.gameObject.activeSelf)
             {
                 activeCount++;
             }
