@@ -12,7 +12,7 @@ public class Sphere : MonoBehaviour
     private float visibleAlpha = 1f;
     private float invisibleAlpha = 0f;
 
-    private void Start()
+    private void Awake()
     {
         _renderer = GetComponent<Renderer>();
     }
@@ -33,6 +33,7 @@ public class Sphere : MonoBehaviour
     private IEnumerator Fade(float fadeDelay)
     {
         float timerValue = 0f;
+
         Color newColor = _renderer.material.color;
 
         while (timerValue < fadeDelay)

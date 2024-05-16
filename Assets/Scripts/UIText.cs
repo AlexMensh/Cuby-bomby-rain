@@ -5,23 +5,24 @@ public class UIText : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _cubesText;
     [SerializeField] private TextMeshProUGUI _spheresText;
-    [SerializeField] private TextMeshProUGUI _toPoolText;
-    [SerializeField] private TextMeshProUGUI _activeObjectsText;
-    [SerializeField] private CubePooler _cubePooler;
-    [SerializeField] private SpherePooler _spherePooler;
+    [SerializeField] private TextMeshProUGUI _activeCubesText;
+    [SerializeField] private TextMeshProUGUI _activeSpheresText;
+    [SerializeField] private CubeSpawner _cubeSpawner;
+    [SerializeField] private SphereSpawner _sphereSpawner;
 
     private void Start()
     {
         _cubesText.text = "0";
         _spheresText.text = "0";
-        _activeObjectsText.text = "0";
-        _toPoolText.text = _cubePooler.GetCubesToPool().ToString();
+        _activeCubesText.text = "0";
+        _activeSpheresText.text = "0";
     }
 
     private void Update()
     {
-        _activeObjectsText.text = (_cubePooler.GetActiveCubesCount() + _spherePooler.GetActiveSpheresCount()).ToString();
-        _cubesText.text = _cubePooler.GetPooledCubesAmount().ToString();
-        _spheresText.text = _spherePooler.GetPooledSphereAmount().ToString();
+        _cubesText.text = _cubeSpawner.GetPooledCubesAmount().ToString();
+        _spheresText.text = _sphereSpawner.GetPooledSphereAmount().ToString();
+        _activeCubesText.text = _cubeSpawner.GetActiveCubesCount().ToString();
+        _activeSpheresText.text = _sphereSpawner.GetActiveSpheresCount().ToString();
     }
 }

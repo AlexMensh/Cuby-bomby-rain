@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class CubePooler : MonoBehaviour
+public class CubeSpawner : MonoBehaviour
 {
     [SerializeField] private Transform _container;
     [SerializeField] private Cube _prefab;
@@ -39,16 +39,19 @@ public class CubePooler : MonoBehaviour
     public int GetPooledCubesAmount()
     {
         int pooledCubes = 0;
+
         foreach (var cube in _pool.PooledObjects)
         {
             pooledCubes++;
         }
+
         return pooledCubes;
     }
 
     public int GetActiveCubesCount()
     {
         int activeCount = 0;
+
         foreach (var cube in _pool.PooledObjects)
         {
             if (cube.gameObject.activeSelf)
@@ -56,12 +59,14 @@ public class CubePooler : MonoBehaviour
                 activeCount++;
             }
         }
+
         return activeCount;
     }
 
     private IEnumerator SpawnObjects()
     {
         WaitForSeconds wait = new WaitForSeconds(_spawnDelay);
+
         for (int i = 0; i < _cubesToPoolAmount; i++)
         {
             yield return wait;

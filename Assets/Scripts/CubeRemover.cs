@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CubeRemover : MonoBehaviour
 {
-    [SerializeField] private CubePooler _pool;
+    [SerializeField] private CubeSpawner _pool;
     [SerializeField] private int _cubeLifetimeMin;
     [SerializeField] private int _cubeLifetimeMax;
 
@@ -15,7 +15,6 @@ public class CubeRemover : MonoBehaviour
         if (cube.IsColorChanged() == false)
         {
             cube.SetRandomColor();
-            cube.ChangeStatus();
 
             StartCoroutine(ReleaseCount(cube));
         }
@@ -28,7 +27,6 @@ public class CubeRemover : MonoBehaviour
 
         yield return wait;
 
-        cube.ChangeStatus();
         cube.SetDefaultColor();
 
         CubeRemoved?.Invoke(cube.transform.position);

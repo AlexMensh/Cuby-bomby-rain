@@ -16,7 +16,7 @@ public class ObjectPooler<T> where T : MonoBehaviour
         _container = container;
     }
 
-    public void GetObject(Vector3 position)
+    public T GetObject(Vector3 position)
     {
         T item = null;
 
@@ -36,6 +36,8 @@ public class ObjectPooler<T> where T : MonoBehaviour
 
         item.gameObject.transform.position = position;
         item.gameObject.SetActive(true);
+
+        return item;
     }
 
     public void PutObject(T item)

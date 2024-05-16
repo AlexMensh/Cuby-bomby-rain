@@ -8,6 +8,11 @@ public class Cube : MonoBehaviour
 
     private void Start()
     {
+        Init();
+    }
+
+    public void Init()
+    {
         _renderer = GetComponent<Renderer>();
         SetDefaultColor();
     }
@@ -17,11 +22,13 @@ public class Cube : MonoBehaviour
         Color randomColor = Random.ColorHSV();
 
         _renderer.material.color = randomColor;
+        _isColorChanged = true;
     }
 
     public void SetDefaultColor()
     {
         _renderer.material.color = Color.white;
+        _isColorChanged = false;
     }
 
     public bool IsColorChanged()
