@@ -35,9 +35,4 @@ public class Cube : MonoBehaviour
     {
         return _isColorChanged;
     }
-
-    public void ChangeStatus()
-    {
-        _isColorChanged = !_isColorChanged;
-    }
 }
