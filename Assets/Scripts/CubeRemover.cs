@@ -30,6 +30,7 @@ public class CubeRemover : MonoBehaviour
         cube.SetDefaultColor();
 
         CubeRemoved?.Invoke(cube.transform.position);
+
         _pool.ReleaseObject(cube);
     }
 }

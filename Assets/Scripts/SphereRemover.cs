@@ -32,6 +32,7 @@ public class SphereRemover : MonoBehaviour
         yield return wait;
 
         sphere.Explode();
+
         _pool.ReleaseObject(sphere);
     }
 }
